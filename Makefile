@@ -8,12 +8,23 @@ $(CASK_DIR): Cask
 .PHONY: cask
 cask: $(CASK_DIR)
 
-compile: cask
-	cask emacs -batch -l roguemacs.el \
+build: cask
+	cask emacs -Q -batch -l roguemacs.el \
           --eval "(setq byte-compile-error-on-warn t)" \
-	  -f batch-byte-compile $$(cask files); \
-	  (ret=$$? ; cask clean-elc && exit $$ret)
+	  -f batch-byte-compile $$(cask files)
+
+clean: cask
+	cask clean-elc
 
 .PHONY: test
-test:
-	cask emacs -batch -l ert -l roguemacs-test.el -f ert-run-tests-batch
+test: cask
+	cask emacs -Q -batch -l ert \
+	-l roguemacs-test.el \
+	-f ert-run-tests-batch
+
+.PHONY: lint
+lint: cask
+	cask emacs -Q -batch -l elisp-lint.el \
+	-f elisp-lint-files-batch \
+	roguemacs.el roguemacs-test.el && \
+	rm *.elc

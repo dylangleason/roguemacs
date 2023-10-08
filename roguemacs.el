@@ -1,10 +1,12 @@
-;;; roguemacs.el --- A rogue-like dungeon crawler. -*- lexical-binding: t; -*-
+;;; roguemacs.el --- A rogue-like dungeon crawler -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2023 Dylan Gleason
 
 ;; Author: Dylan Gleason <dgleason8384@gmail.com>
 ;; Created: 2023
 ;; Keywords: games
+;; Package-Requires: ((emacs "29.1"))
+;; Homepage: https://github.com/dylangleason/roguemacs
 ;; Version: 0.0.1
 
 ;; This file is NOT part of GNU Emacs.
@@ -25,7 +27,7 @@
 ;;; Commentary:
 
 ;; RoguEmacs is a rogue-like dungeon crawler game implemented using
-;; `gamegrid'. The player advances through a procedurally generated
+;; `gamegrid'.  The player advances through a procedurally generated
 ;; dungeon, encountering monsters and finding treasure along the way.
 
 ;;; Code:
@@ -34,7 +36,7 @@
 
 (require 'gamegrid)
 
-;;; ;;;;;;;;;;;;;;;;;;;;; constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ;;;;;;;;;;;;;;;;;;;;; constants ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defconst roguemacs-buffer-name "RoguEmacs"
   "Name of the RoguEmacs game buffer.")
@@ -60,7 +62,7 @@
 (defconst roguemacs-score-file-name "roguemacs-scores"
   "File name for writing RoguEmacs game scores.")
 
-;;; ;;;;;;;;;;;;;;;;;;;;; game logic ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ;;;;;;;;;;;;;;;;;;;;; game logic ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar-local roguemacs-score 0
   "Player RoguEmacs game score.")
@@ -71,7 +73,7 @@
 (defvar-local roguemacs-set-cell #'gamegrid-set-cell
   "Set a gamegrid cell.")
 
-;;; ;;;;;;;;;;;;;;;;;;;;; keymaps ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ;;;;;;;;;;;;;;;;;;;;; keymaps ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar-keymap roguemacs-mode-map
   :doc "Keymap for RoguEmacs games."
@@ -90,17 +92,42 @@
   "n"   #'roguemacs-start-game
   "q"   #'quit-window)
 
-;;; ;;;;;;;;;;;;;;;;;;;;; game logic ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; ;;;;;;;;;;;;;;;;;;;;; game logic ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun roguemacs--carve-rooms ()
+  "Carve out the rooms for the dungeon."
   ;; TODO
   )
 
 (defun roguemacs--carve-pathways ()
+  "Carve out pathways connecting rooms to dungeons."
   ;; TODO
   )
 
 (defun roguemacs--connect-rooms ()
+  "Connect the dungeon rooms to pathways."
+  ;; TODO
+  )
+
+;;; ;;;;;;;;;;;;;;;;;;;;; input handlers ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun roguemacs-move-north ()
+  "Move the player north."
+  ;; TODO
+  )
+
+(defun roguemacs-move-west ()
+  "Move the player west."
+  ;; TODO
+  )
+
+(defun roguemacs-move-south ()
+  "Move the player south."
+  ;; TODO
+  )
+
+(defun roguemacs-move-east ()
+  "Move the player south."
   ;; TODO
   )
 
@@ -112,12 +139,13 @@
   )
 
 (defun roguemacs-init-buffer ()
-  "Initialize the RoguEmacs game buffer, which should be executed prior
-to initializing the display when starting or restarting the game."
+  "Initialize the RoguEmacs game buffer.
+Executes prior to initializing the display when starting or
+restarting the game."
   (funcall roguemacs-init-gamegrid
-	   roguemacs-buffer-width
-	   roguemacs-buffer-height
-	   roguemacs-dungeon-empty-space)
+           roguemacs-buffer-width
+           roguemacs-buffer-height
+           roguemacs-dungeon-empty-space)
   ;; This mode derives from `special-mode', so temporarily write to
   ;; the buffer by setting `buffer-read-only' to nil.
   (let ((buffer-read-only nil))
@@ -125,14 +153,14 @@ to initializing the display when starting or restarting the game."
     ;; top left coordinates (0, 0)
     (dotimes (y roguemacs-buffer-height)
       (dotimes (x roguemacs-buffer-width)
-	(funcall roguemacs-set-cell x y roguemacs-dungeon-wall)))
+        (funcall roguemacs-set-cell x y roguemacs-dungeon-wall)))
     ;; TODO: Carve out the walls of the dungeon, placing the floors
     ))
 
 (defun roguemacs-update-game ()
-  "Called by the game loop on each tick. Updates the position of
-the game objects within the dungeon, including the player and
-enemies."
+  "Called by the game loop on each tick.
+Updates the position of the game objects within the dungeon,
+including the player and enemies."
   ;; TODO
   )
 
@@ -147,6 +175,11 @@ enemies."
   (roguemacs-reset-game)
   (use-local-map roguemacs-mode-map)
   (gamegrid-start-timer roguemacs-tick-interval #'roguemacs-update-game))
+
+(defun roguemacs-pause-game ()
+  "Pause the current RoguEmacs game."
+  ;; TODO
+  )
 
 (defun roguemacs-end-game ()
   "End the current RoguEmacs game and add the player scores."
@@ -164,9 +197,10 @@ enemies."
 
 ;;;###autoload
 (defun roguemacs ()
-  "Play a rogue-like dungeon crawler game. You, the hero, advance
-through a procedurally generated dungeon, encountering monsters,
-finding treasure, and discovering hidden rooms."
+  "Play a rogue-like dungeon crawler game.
+You, the hero, advance through a procedurally generated dungeon,
+encountering monsters, finding treasure, and discovering hidden
+rooms."
   (interactive nil roguemacs-mode)
   (switch-to-buffer roguemacs-buffer-name)
   (gamegrid-kill-timer)

@@ -5,6 +5,8 @@
 ;; Author: Dylan Gleason <dgleason8384@gmail.com>
 ;; Created: 2023
 ;; Keywords: games
+;; Package-Requires: ((emacs "29.1"))
+;; Homepage: https://github.com/dylangleason/roguemacs
 ;; Version: 0.0.1
 
 ;; This file is NOT part of GNU Emacs.
@@ -32,14 +34,14 @@
 
 (ert-deftest roguemacs-test-initial-buffer ()
   (let* ((expected)
-	 (actual (make-list (* roguemacs-buffer-height
-			       roguemacs-buffer-width)
-			    roguemacs-dungeon-wall))
-	 (roguemacs-init-gamegrid
-	  (lambda (width height marker)))
-	 (roguemacs-set-cell
-	  (lambda (x y marker)
-	    (push marker expected))))
+         (actual (make-list (* roguemacs-buffer-height
+                               roguemacs-buffer-width)
+                            roguemacs-dungeon-wall))
+         (roguemacs-init-gamegrid
+          (lambda (_ _ _)))
+         (roguemacs-set-cell
+          (lambda (_ _ marker)
+            (push marker expected))))
     (roguemacs-init-buffer)
     (should (equal expected actual))))
 
